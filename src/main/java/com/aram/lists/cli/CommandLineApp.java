@@ -1,46 +1,37 @@
 package com.aram.lists.cli;
 
 import com.aram.lists.files.SimpleFileReader;
-import com.aram.lists.model.WordCounter;
-import com.aram.lists.model.WordExtractor;
-
+import com.aram.lists.model.PhraseMatches;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.aram.lists.cli.Messages.ASK_FOR_WORD_TEMPLATE;
+import static com.aram.lists.cli.Messages.ASK_FOR_PHRASE_TEMPLATE;
 import static com.aram.lists.cli.Messages.FINAL_MESSAGE_TEMPLATE;
 import static java.lang.String.format;
 
 public class CommandLineApp {
 
     private final SimpleFileReader fileReader;
-    private final WordExtractor wordExtractor;
-    private final WordCounter wordCounter;
     private final Scanner scanner;
+    private final PhraseMatches phraseMatches;
 
     public CommandLineApp() {
         this.fileReader = new SimpleFileReader();
-        this.wordExtractor = new WordExtractor();
-        this.wordCounter = new WordCounter();
+        this.phraseMatches = new PhraseMatches();
         this.scanner = new Scanner(System.in);
     }
 
     public void run(String fileName) {
-        final List<String> wordsInFile = readWords(fileName);
+        final List<String> lines = fileReader.readLines(fileName);
         while (true) {
-            final String searchedWord = askSearchedWord(fileName);
-            final long repetitions = wordCounter.repetitions(searchedWord, wordsInFile);
-            display(format(FINAL_MESSAGE_TEMPLATE, searchedWord, repetitions, fileName));
+            final String phrase = askPhrase(fileName);
+            final int matches = phraseMatches.of(phrase, lines);
+            display(format(FINAL_MESSAGE_TEMPLATE, phrase, matches, fileName));
         }
     }
 
-    private List<String> readWords(String fileName) {
-        final List<String> rawTokens = fileReader.rawTokens(fileName);
-        return wordExtractor.extractRealWords(rawTokens);
-    }
-
-    private String askSearchedWord(String fileName) {
-        return input(format(ASK_FOR_WORD_TEMPLATE, fileName));
+    private String askPhrase(String fileName) {
+        return input(format(ASK_FOR_PHRASE_TEMPLATE, fileName));
     }
 
     private String input(String message) {

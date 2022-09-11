@@ -1,22 +1,28 @@
 package com.aram.lists.files;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class SimpleFileReader {
-    public List<String> rawTokens(String fileName) {
-        final List<String> allTokens = new ArrayList<>();
-        try (var scanner = new Scanner(new BufferedReader(new FileReader(fileName)))) {
-            while (scanner.hasNext()) {
-                allTokens.add(scanner.next());
-            }
-        } catch (FileNotFoundException e) {
+    public List<String> readLines(String fileName) {
+        try {
+            return readAllLines(fileName);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return allTokens;
     }
+
+    private List<String> readAllLines(String fileName) throws IOException {
+        return Files.readAllLines(path(fileName));
+    }
+
+    private Path path(String fileName) {
+        return Paths.get(new File(fileName).toURI());
+    }
+
 }
