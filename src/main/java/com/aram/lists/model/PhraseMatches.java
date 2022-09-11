@@ -16,12 +16,14 @@ import java.util.regex.Pattern;
  *  EXAMPLES:
  *  - If we look for 'Alice' in 'Alice in Wonderland', we get 399 matches
  *  - If we look for 'aLic' in 'Alice in Wonderland', we STILL get 399 matches (CTRL-F behaviour)
- *  - If we look for 'white rabbit' in 'Alice in Wonderland' we get 3 matches
+ *  - If we look for 'white rabbit' in 'Alice in Wonderland' we get 21 matches
  *
  *  As far as the author is concerned, the results are exactly equal to the Chrome's CTRL-F feature.
  *
  * @author Alex Angulo
+ *
  */
+
 public final class PhraseMatches {
     public int of(String phrase, Collection<String> strings) {
         // We DON'T need to do String.trim() because
