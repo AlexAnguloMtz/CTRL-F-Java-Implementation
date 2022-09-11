@@ -25,6 +25,17 @@ import java.util.regex.Pattern;
  */
 
 public final class PhraseMatches {
+
+    /**
+     * Determines the number of matches for a phrase in a Collection of String objects
+     * A match is defined as 'the exact same character sequence inside any other String object'
+     * For example: 'green snake' has 2 matches in 'The green snake has green snake fever'
+     *
+     * @param phrase     the phrase to search
+     * @param strings    the strings that might or not contain the phrase
+     * @return the total number of matches for the phrase in the given Collection of String objects
+     *
+     */
     public int of(String phrase, Collection<String> strings) {
         // We DON'T need to do String.trim() because
         // a space is a valid character in a phrase. That is valid CTRL-F behaviour.
